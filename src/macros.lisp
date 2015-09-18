@@ -112,6 +112,24 @@
 (defpsmacro arrayp (x)
   `(listp ,x))
 
+;;; Numbers.
+
+(defpsmacro parse-integer (x &optional (radix 10 radix?))
+  (if radix?
+      `(parse-int ,x ,radix)
+      `(parse-int ,x 10)))
+
+(defpsmacro integerp (x)
+  `(chain *number (is-integer ,x)))
+
+(macrolet ((epsilon (name)
+             `(define-ps-symbol-macro ,name
+                  (@ *number *epsilon*))))
+  (epsilon short-float-epsilon)
+  (epsilon single-float-epsilon)
+  (epsilon double-float-epsilon)
+  (epsilon long-float-epsilon))
+
 ;;; Data structures
 
 (defpsmacro make-array (&rest args)
